@@ -6,7 +6,7 @@ import { ClienteContext } from './ClienteContext';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
 
 export default function Lista({ navigation }) {
-  const { clientes, setClientes } = useContext(ClienteContext);
+  const { clientes, setClientes, excluirCliente } = useContext(ClienteContext);
   const [termoBusca, setTermoBusca] = useState('');
   const [clientesFiltrados, setClientesFiltrados] = useState(clientes);
 
@@ -38,7 +38,7 @@ export default function Lista({ navigation }) {
     navigation.navigate('Produto', { cliente });
   };
 
-  const excluirCliente = (cliente) => {
+  const confirmarExclusao = (cliente) => {
     Alert.alert(
       "Excluir Cliente",
       `Tem certeza que deseja excluir ${cliente.nome}?`,
@@ -50,7 +50,9 @@ export default function Lista({ navigation }) {
         {
           text: "Excluir",
           onPress: () => {
-            setClientes(clientes.filter(c => c.id !== cliente.id));
+            // console.log('Excluindo cliente:', cliente);
+            // setClientes(clientes.filter(c => c.id !== cliente.id));
+            excluirCliente(cliente.id);
           }
         }
       ]
@@ -60,10 +62,10 @@ export default function Lista({ navigation }) {
   const renderRightActions = (cliente) => {
     return (
       <View style={styles.actionsContainer}>
-        <RectButton style={[styles.actionButtonBlue, styles.addButton]} onPress={() => adicionarProduto(cliente)}>
+        {/* <RectButton style={[styles.actionButtonBlue, styles.addButton]} onPress={() => adicionarProduto(cliente)}>
           <Ionicons name="add" size={24} color="white" />
-        </RectButton>
-        <RectButton style={[styles.actionButtonRed, styles.deleteButton]} onPress={() => excluirCliente(cliente)}>
+        </RectButton> */}
+        <RectButton style={[styles.actionButtonRed, styles.deleteButton]} onPress={() => confirmarExclusao(cliente)}>
           <Ionicons name="trash" size={24} color="white" />
         </RectButton>
       </View>
@@ -105,7 +107,7 @@ export default function Lista({ navigation }) {
 
         <FlatList
           data={clientesFiltrados}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <Swipeable renderRightActions={() => renderRightActions(item)}>
               <View style={styles.clienteItem}>
