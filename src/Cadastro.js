@@ -139,14 +139,14 @@ const styles = StyleSheet.create({
     height:40,
     paddingHorizontal:4,
     marginHorizontal:'auto',
-    marginTop:10
+    marginTop:8
   },
   label:{
     color:'#F38708',
     fontSize:20,
     fontWeight:'bold',
     marginHorizontal:'5%',
-    marginTop:30
+    marginTop:10
   },
   buttons:{
     flexDirection:'row',

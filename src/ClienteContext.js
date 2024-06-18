@@ -16,10 +16,13 @@ export const ClienteProvider = ({ children }) => {
     ));
   };
 
+  const excluirCliente = (idCliente) => {
+    setClientes(clientes.filter(cliente => cliente.id !== idCliente));
+  };
+
   return (
-    <ClienteContext.Provider value={{ clientes, adicionarCliente, adicionarProduto }}>
+    <ClienteContext.Provider value={{ clientes, adicionarCliente, adicionarProduto, excluirCliente }}>
       {children}
     </ClienteContext.Provider>
   );
 };
-

@@ -22,13 +22,9 @@ export default function Lista({ navigation }) {
     return clientes.reduce((total, cliente) => total + (cliente.produto?.valorTotal || 0), 0).toFixed(2);
   };
 
-  const calcularDiasPassados = (dataRegistro) => {
-    if (!dataRegistro) return 0;
+  const calcularDiasPassados = () => {
     const hoje = new Date();
-    const dataReg = new Date(dataRegistro);
-    const diffTime = Math.abs(hoje - dataReg);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+    return hoje;
   };
 
   const buscarClientes = () => {
@@ -54,7 +50,7 @@ export default function Lista({ navigation }) {
         {
           text: "Excluir",
           onPress: () => {
-            setClientes(clientes.filter(c => c !== cliente));
+            setClientes(clientes.filter(c => c.id !== cliente.id));
           }
         }
       ]
@@ -64,7 +60,7 @@ export default function Lista({ navigation }) {
   const renderRightActions = (cliente) => {
     return (
       <View style={styles.actionsContainer}>
-        <RectButton style={[styles.actionButtonBlue, styles.addButton]} onPress={() =>       adicionarProduto(cliente)}>
+        <RectButton style={[styles.actionButtonBlue, styles.addButton]} onPress={() => adicionarProduto(cliente)}>
           <Ionicons name="add" size={24} color="white" />
         </RectButton>
         <RectButton style={[styles.actionButtonRed, styles.deleteButton]} onPress={() => excluirCliente(cliente)}>
@@ -119,13 +115,13 @@ export default function Lista({ navigation }) {
                 </View>
 
                 <View style={styles.item}>
-                  <Text style={styles.clienteDetalhes}>Tempo de Débito:</Text>
-                  <Text style={styles.clienteDetalhes}>{calcularDiasPassados(item.produto.dataRegistro)} dias</Text>
+                  <Text style={styles.clienteDetalhes}>Registro:</Text>
+                  <Text style={styles.clienteDetalhes}>{calcularDiasPassados().toLocaleDateString()}</Text>
                 </View>
 
                 <View style={styles.item}>
                   <Text style={styles.clienteDetalhes}>Valor do Débito:</Text>
-                  <Text style={styles.clienteDetalhes}>R${item.produto.valorTotal.toFixed(2)}</Text>
+                  <Text style={styles.clienteDetalhes}>R$ {item.produto.valorTotal.toFixed(2)}</Text>
                 </View>
 
                 <View style={styles.item}>
@@ -242,6 +238,7 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop:2
   },
   itemNome: {
     flexDirection: 'row',
